@@ -540,7 +540,7 @@ def build_post_data(message):
     for logEvent in message['logEvents']:
         # Perform log manipulation here
         if not sampler.process_line(logEvent['message']):
-            continue 
+            continue
         (log_line, redacted) = redactor.process_line(logEvent['message'])
         if not 'timestamp' in logEvent or not 'prefix_timestamp' in options or not options['prefix_timestamp']:
             ts = ""
