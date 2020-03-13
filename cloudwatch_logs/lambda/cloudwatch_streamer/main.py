@@ -539,10 +539,10 @@ def build_post_data(message):
         redactor.add_redaction_rule(rule['match_expression'], rule.get('replacement', ''), rule.get('hash_salt', ''))
     for logEvent in message['logEvents']:
         # Perform log manipulation here
-        if  not 'timestamp' in logEvent:
-            ts = ''
+        if  not 'timestamp' in logEvent or not 'prefix_timestamp' in options or not options['prefix_timestamp']:
+            ts = ""
         else:
-            ts = str(logEvent['timestamp']) + ' '
+            ts = str(logEvent['timestamp']) + " "
         if not sampler.process_line(logEvent['message']):
             continue
         (log_line, redacted) = redactor.process_line(logEvent['message'])
@@ -552,6 +552,8 @@ def build_post_data(message):
             post_data += ts + log_line + '\n'
     LOGGER.debug(f"Post data: {post_data}")
     return post_data
+
+
 
 
 
