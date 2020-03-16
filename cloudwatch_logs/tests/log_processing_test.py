@@ -361,6 +361,13 @@ class TestStreamer(ScalyrTestCase):
 
         self.assertEquals(streamer.build_post_data(self.message), "abc\n")
 
+    def test_build_post_data_with_timestamp_multiline(self):
+        streamer.LOG_GROUP_OPTIONS = {"logGroup": {"prefix_timestamp": True}}
+        self.message["logEvents"][0]["timestamp"] = "12345"
+        self.message["logEvents"].append({"timestamp": "22222", "message": "cba"})
+
+        self.assertEquals(streamer.build_post_data(self.message), "12345 abc\n22222 cba\n")
+
 
 if __name__ == '__main__':
     unittest.main()
